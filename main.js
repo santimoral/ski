@@ -36,10 +36,10 @@ for(r = 0; r < height; r++) {
     }
 }
 
-console.log("Routes: ");
-console.log(routes);
+// console.log("Routes: ");
+// console.log(routes);
 
-function checkRoutes(route) {
+function checkRoutes(initialRoute) {
 
     cardPoints = [
         {direction: "East", r: 0, c: 1},
@@ -48,23 +48,25 @@ function checkRoutes(route) {
         {direction: "North", r: -1, c: 0}
     ];
 
-    lastPoint = route[route.length - 1];
+    lastPoint = initialRoute[initialRoute.length - 1];
 
-    for(var k = 0; k < cardPoints.length; k++) {
+    for(k = 0; k < cardPoints.length; k++) {
         var newPoint = {};
-        var count = 0;
         if(newAltitude = ski(lastPoint["r"], lastPoint["c"], cardPoints[k]["direction"])) {
             if(newAltitude < lastPoint["alt"]) {
                 newPoint["r"] = lastPoint["r"] + cardPoints[k]["r"];
                 newPoint["c"] = lastPoint["c"] + cardPoints[k]["c"];
                 newPoint["alt"] = parseInt(newAltitude);
                 console.log(lastPoint["alt"] + " to " + cardPoints[k]["direction"] + " " + newPoint["alt"]);
-                var newRoute = [];
-                newRoute[0] = lastPoint;
+                var newRoute = initialRoute.concat();
                 newRoute.push(newPoint);
                 routes.push(newRoute);
-                checkRoutes(newRoute);
+                // console.log(lastPoint);
+                // console.log(newPoint);
+                console.log(k);
+                // console.log(initialRoute);
                 console.log(newRoute);
+                // checkRoutes(newRoute);
             }
         }
     }
