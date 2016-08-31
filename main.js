@@ -36,8 +36,21 @@ for(r = 0; r < height; r++) {
     }
 }
 
-// console.log("Routes: ");
-// console.log(routes);
+var s = 0;
+var maxSki = 0;
+var maxLevel = 0;
+
+while(routes[s]) {
+    checkRoutes(routes[s]);
+    s++;
+}
+
+// maxSki = routes[s - 1].length;
+
+console.log("Routes: ");
+console.log(routes);
+console.log("Max length: " + maxSki);
+console.log("Max level: " + maxLevel);
 
 function checkRoutes(initialRoute) {
 
@@ -61,11 +74,12 @@ function checkRoutes(initialRoute) {
                 var newRoute = initialRoute.concat();
                 newRoute.push(newPoint);
                 routes.push(newRoute);
+                if(newRoute.length > maxSki) {maxSki = newRoute.length}
+                if(initialRoute[0]["alt"] - newAltitude > maxLevel) {maxLevel = initialRoute[0]["alt"] - newAltitude}
                 // console.log(lastPoint);
                 // console.log(newPoint);
-                console.log(k);
                 // console.log(initialRoute);
-                console.log(newRoute);
+                // console.log(newRoute);
                 // checkRoutes(newRoute);
             }
         }
