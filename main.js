@@ -23,8 +23,6 @@ for(var i = 0; i < lines.length - 1; i++) {
     map[i] = lines[lineNumber].split(" ");
 }
 
-// transpose(map, width);
-
 // console.log(map);
 
 var s = 0;
@@ -37,11 +35,11 @@ for(r = 0; r < height; r++) {
         var alt = parseInt(map[r][c]);
         route[0] = {r, c, alt};
         checkRoutes(route);
-        // iterateRoutes();
     }
 }
 
 iterateRoutes();
+
 console.log("Routes: " + (s - 1));
 console.log("Max length: " + maxSki);
 console.log("Max level: " + maxLevel);
@@ -71,28 +69,28 @@ function checkRoutes(initialRoute) {
 
     for(k = 0; k < cardPoints.length; k++) {
         var newPoint = {};
-        if(newAltitude = ski(lastPoint["r"], lastPoint["c"], cardPoints[k]["direction"])) {
-            if(newAltitude < lastPoint["alt"]) {
-                newPoint["r"] = lastPoint["r"] + cardPoints[k]["r"];
-                newPoint["c"] = lastPoint["c"] + cardPoints[k]["c"];
-                newPoint["alt"] = parseInt(newAltitude);
-                // console.log(lastPoint["alt"] + " to " + cardPoints[k]["direction"] + " " + newPoint["alt"]);
-                var newRoute = initialRoute.concat();
-                newRoute.push(newPoint);
-                routes.push(newRoute);
-                if(newRoute.length > maxSki) {
-                    maxLevel = 0;
-                    maxSki = newRoute.length;
-                    console.log("Length: " + maxSki + " Level: " + maxLevel);
-                }
-                if(initialAltitude - newAltitude > maxLevel) {
-                    maxLevel = initialAltitude - newAltitude;
-                    console.log("Length: " + maxSki + " Level: " + maxLevel);
-                }
+        var newAltitude = ski(lastPoint["r"], lastPoint["c"], cardPoints[k]["direction"]);
+        console.log(lastPoint);
+        if(newAltitude != false && newAltitude < lastPoint["alt"]) {
+            newPoint["r"] = lastPoint["r"] + cardPoints[k]["r"];
+            newPoint["c"] = lastPoint["c"] + cardPoints[k]["c"];
+            newPoint["alt"] = parseInt(newAltitude);
+            // console.log(lastPoint["alt"] + " to " + cardPoints[k]["direction"] + " " + newPoint["alt"]);
+            var newRoute = initialRoute.concat();
+            newRoute.push(newPoint);
+            routes.push(newRoute);
+            // console.log(newRoute);
+            if(newRoute.length > maxSki) {
+                maxLevel = 0;
+                maxSki = newRoute.length;
+                console.log("Length: " + maxSki + " Level reset: " + maxLevel);
+            }
+            if(initialAltitude - newAltitude > maxLevel) {
+                maxLevel = initialAltitude - newAltitude;
+                console.log("Length: " + maxSki + " Level: " + maxLevel);
             }
         }
     }
-    // var result = new iterateRoutes();
 }
 
 function ski(r, c, direction) {
