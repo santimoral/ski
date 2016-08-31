@@ -4,9 +4,9 @@
 var fs = require("fs");
 
 // Synchronous read
-var data = fs.readFileSync('map.txt');
+var data = fs.readFileSync('map-2.txt');
 var stream = data.toString();
-var lines = stream.split("\r\n");
+var lines = stream.split("\n");
 
 var words = lines[0].split(" ");
 var width = words[0];
@@ -40,20 +40,21 @@ for(r = 0; r < height; r++) {
     }
 }
 
-while(routes[0]) {
-    checkRoutes(routes[0]);
-    routes.shift();
-    s++;
-    // console.log("Queue length: " + routes.length);
-}
-
-// maxSki = routes[s - 1].length;
-
-// console.log("Routes: ");
-// console.log(routes);
+iterateRoutes();
 console.log("Routes: " + (s - 1))
 console.log("Max length: " + maxSki);
 console.log("Max level: " + maxLevel);
+
+function iterateRoutes() {
+    while (routes[0]) {
+        checkRoutes(routes[0]);
+        routes.shift();
+        s++;
+        console.log("Queue length: " + routes.length);
+        console.log(routes[0]);
+    }
+    return 0;
+}
 
 function checkRoutes(initialRoute) {
 
@@ -78,17 +79,19 @@ function checkRoutes(initialRoute) {
                 var newRoute = initialRoute.concat();
                 newRoute.push(newPoint);
                 routes.push(newRoute);
-                if(newRoute.length > maxSki) {maxSki = newRoute.length};
-                if(initialAltitude - newAltitude > maxLevel) {maxLevel = initialAltitude - newAltitude};
-                // console.log("Length: " + maxSki + " Level: " + maxLevel);
-                // console.log(lastPoint);
-                // console.log(newPoint);
-                // console.log(initialRoute);
-                // console.log(newRoute);
-                // checkRoutes(newRoute);
+                if(newRoute.length > maxSki) {
+                    maxSki = newRoute.length;
+                    console.log("Length: " + maxSki + " Level: " + maxLevel);
+                };
+                if(initialAltitude - newAltitude > maxLevel) {
+                    maxLevel = initialAltitude - newAltitude;
+                    console.log("Length: " + maxSki + " Level: " + maxLevel);
+                };
+
             }
         }
     }
+    // var result = new iterateRoutes();
 }
 
 function ski(r, c, direction) {
