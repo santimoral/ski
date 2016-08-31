@@ -4,7 +4,7 @@
 var fs = require("fs");
 
 // Synchronous read
-var data = fs.readFileSync('map-2.txt');
+var data = fs.readFileSync('map-1.txt');
 var stream = data.toString();
 var lines = stream.split("\n");
 
@@ -37,11 +37,12 @@ for(r = 0; r < height; r++) {
         var alt = parseInt(map[r][c]);
         route[0] = {r, c, alt};
         checkRoutes(route);
+        // iterateRoutes();
     }
 }
 
 iterateRoutes();
-console.log("Routes: " + (s - 1))
+console.log("Routes: " + (s - 1));
 console.log("Max length: " + maxSki);
 console.log("Max level: " + maxLevel);
 
@@ -50,8 +51,8 @@ function iterateRoutes() {
         checkRoutes(routes[0]);
         routes.shift();
         s++;
-        console.log("Queue length: " + routes.length);
-        console.log(routes[0]);
+        // console.log("Queue length: " + routes.length);
+        // console.log(routes[0]);
     }
     return 0;
 }
@@ -80,14 +81,14 @@ function checkRoutes(initialRoute) {
                 newRoute.push(newPoint);
                 routes.push(newRoute);
                 if(newRoute.length > maxSki) {
+                    maxLevel = 0;
                     maxSki = newRoute.length;
                     console.log("Length: " + maxSki + " Level: " + maxLevel);
-                };
+                }
                 if(initialAltitude - newAltitude > maxLevel) {
                     maxLevel = initialAltitude - newAltitude;
                     console.log("Length: " + maxSki + " Level: " + maxLevel);
-                };
-
+                }
             }
         }
     }
@@ -129,4 +130,4 @@ function ski(r, c, direction) {
     }
 }
 
-console.log("Program Ended")
+console.log("Program Ended");
