@@ -4,7 +4,7 @@
 var fs = require("fs");
 
 // Synchronous read
-var data = fs.readFileSync('map-2.txt');
+var data = fs.readFileSync('map-1.txt');
 var stream = data.toString();
 var lines = stream.split("\n");
 
@@ -77,7 +77,7 @@ function checkRoutes(selectedRoute) {
                 if (initialAltitude - newAltitude > maxDrop) {
                     maxDrop = initialAltitude - newAltitude;
                     console.log("Max length: " + maxLength + " Drop: " + maxDrop);
-                    bestRoute = newRoute.slice();
+                    bestRoute = newRoute;
                 }
             }
             checkRoutes(newRoute);
