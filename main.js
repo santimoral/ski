@@ -16,7 +16,6 @@ console.log("Width = " + width);
 console.log("Height =  " + height);
 
 var map = [];
-// var routes = [];
 
 for(var i = 0; i < lines.length - 1; i++) {
     var lineNumber = i + 1;
@@ -25,7 +24,6 @@ for(var i = 0; i < lines.length - 1; i++) {
 
 // console.log(map);
 
-// var s = 0;
 var maxLength = 0;
 var maxDrop = 0;
 var bestRoute = [];
@@ -39,22 +37,13 @@ for(r = 0; r < height; r++) {
     }
 }
 
-// iterateRoutes();
-
-console.log("Best route: " + bestRoute);
 console.log("Max length: " + maxLength);
 console.log("Max level: " + maxDrop);
+console.log("Best route");
+for(var s=0; s < bestRoute.length; s++) {
+    console.log(bestRoute[s]);
+}
 
-// function iterateRoutes() {
-//     while (routes[0]) {
-//         checkRoutes(routes[0]);
-//         routes.shift();
-//         s++;
-//         // console.log("Queue length: " + routes.length);
-//         // console.log(routes[0]);
-//     }
-//     return 0;
-// }
 
 function checkRoutes(selectedRoute) {
 
@@ -79,20 +68,19 @@ function checkRoutes(selectedRoute) {
             newPoint["alt"] = parseInt(newAltitude);
             var newRoute = initialRoute.concat();
             newRoute.push(newPoint);
-            // console.log(newRoute);
-            if(newRoute.length > maxLength ) {
+            if(newRoute.length >= maxLength) {
                 maxLength = newRoute.length;
-                maxDrop = initialAltitude - newAltitude;
-                console.log("Length: " + maxLength + " Level reset: " + maxDrop);
-                // console.log(newRoute);
-            }
-            if(initialAltitude - newAltitude > maxDrop) {
-                maxDrop = initialAltitude - newAltitude;
-                console.log("Length: " + maxLength + " Level: " + maxDrop);
+                if(newRoute.length > maxLength) {
+                    maxDrop = initialAltitude - newAltitude;
+                    console.log("Max length: " + maxLength + " Drop reset: " + maxDrop);
+                }
+                if (initialAltitude - newAltitude > maxDrop) {
+                    maxDrop = initialAltitude - newAltitude;
+                    console.log("Max length: " + maxLength + " Drop: " + maxDrop);
+                    bestRoute = newRoute.slice();
+                }
             }
             checkRoutes(newRoute);
-        } else {
-            // console.log("End of route");
         }
     }
     return 0;
@@ -134,4 +122,4 @@ function ski(r, c, direction) {
     }
 }
 
-console.log("Program Ended");
+console.log("Program ended");
