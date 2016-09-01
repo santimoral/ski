@@ -4,7 +4,7 @@
 var fs = require("fs");
 
 // Synchronous read
-var data = fs.readFileSync('map-1.txt');
+var data = fs.readFileSync('map-2.txt');
 var stream = data.toString();
 var lines = stream.split("\n");
 
@@ -16,7 +16,7 @@ console.log("Width = " + width);
 console.log("Height =  " + height);
 
 var map = [];
-var routes = [];
+// var routes = [];
 
 for(var i = 0; i < lines.length - 1; i++) {
     var lineNumber = i + 1;
@@ -25,9 +25,10 @@ for(var i = 0; i < lines.length - 1; i++) {
 
 // console.log(map);
 
-var s = 0;
-var maxSki = 0;
-var maxLevel = 0;
+// var s = 0;
+var maxLength = 0;
+var maxDrop = 0;
+var bestRoute = [];
 
 for(r = 0; r < height; r++) {
     for(c = 0; c < width; c++) {
@@ -38,24 +39,24 @@ for(r = 0; r < height; r++) {
     }
 }
 
-iterateRoutes();
+// iterateRoutes();
 
-console.log("Routes: " + (s - 1));
-console.log("Max length: " + maxSki);
-console.log("Max level: " + maxLevel);
+console.log("Best route: " + bestRoute);
+console.log("Max length: " + maxLength);
+console.log("Max level: " + maxDrop);
 
-function iterateRoutes() {
-    while (routes[0]) {
-        checkRoutes(routes[0]);
-        routes.shift();
-        s++;
-        // console.log("Queue length: " + routes.length);
-        // console.log(routes[0]);
-    }
-    return 0;
-}
+// function iterateRoutes() {
+//     while (routes[0]) {
+//         checkRoutes(routes[0]);
+//         routes.shift();
+//         s++;
+//         // console.log("Queue length: " + routes.length);
+//         // console.log(routes[0]);
+//     }
+//     return 0;
+// }
 
-function checkRoutes(initialRoute) {
+function checkRoutes(selectedRoute) {
 
     cardPoints = [
         {direction: "East", r: 0, c: 1},
@@ -64,34 +65,39 @@ function checkRoutes(initialRoute) {
         {direction: "North", r: -1, c: 0}
     ];
 
-    lastPoint = initialRoute[initialRoute.length - 1];
-    initialAltitude = initialRoute[0]["alt"];
+    var initialRoute = selectedRoute;
+    var lastPoint = initialRoute[initialRoute.length - 1];
+    var initialAltitude = initialRoute[0]["alt"];
 
-    for(k = 0; k < cardPoints.length; k++) {
+    for(var k = 0; k < cardPoints.length; k++) {
         var newPoint = {};
         var newAltitude = ski(lastPoint["r"], lastPoint["c"], cardPoints[k]["direction"]);
-        console.log(lastPoint);
+        // console.log(lastPoint["alt"] + " -> " + cardPoints[k]["direction"] + " -> " + newAltitude);
         if(newAltitude != false && newAltitude < lastPoint["alt"]) {
             newPoint["r"] = lastPoint["r"] + cardPoints[k]["r"];
             newPoint["c"] = lastPoint["c"] + cardPoints[k]["c"];
             newPoint["alt"] = parseInt(newAltitude);
-            // console.log(lastPoint["alt"] + " to " + cardPoints[k]["direction"] + " " + newPoint["alt"]);
             var newRoute = initialRoute.concat();
             newRoute.push(newPoint);
-            routes.push(newRoute);
             // console.log(newRoute);
-            if(newRoute.length > maxSki) {
-                maxLevel = 0;
-                maxSki = newRoute.length;
-                console.log("Length: " + maxSki + " Level reset: " + maxLevel);
+            if(newRoute.length > maxLength ) {
+                maxLength = newRoute.length;
+                maxDrop = initialAltitude - newAltitude;
+                console.log("Length: " + maxLength + " Level reset: " + maxDrop);
+                // console.log(newRoute);
             }
-            if(initialAltitude - newAltitude > maxLevel) {
-                maxLevel = initialAltitude - newAltitude;
-                console.log("Length: " + maxSki + " Level: " + maxLevel);
+            if(initialAltitude - newAltitude > maxDrop) {
+                maxDrop = initialAltitude - newAltitude;
+                console.log("Length: " + maxLength + " Level: " + maxDrop);
             }
+            checkRoutes(newRoute);
+        } else {
+            // console.log("End of route");
         }
     }
+    return 0;
 }
+
 
 function ski(r, c, direction) {
     switch(direction) {
