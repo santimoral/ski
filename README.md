@@ -6,7 +6,7 @@ Well you can’t really ski in Singapore. But let’s say you hopped on a flight
 
 In digital form the map looks like the number grid below.
 
-4 4 
+4 4
 4 8 7 3 
 2 5 9 3 
 6 3 2 5 
